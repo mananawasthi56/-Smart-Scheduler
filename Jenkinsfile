@@ -15,7 +15,6 @@ pipeline {
                 if %errorlevel% neq 0 (
                     echo Python not found, installing...
                     choco install python --version=3.10.0 -y
-                    refreshenv
                 ) else (
                     echo Python is already installed
                 )
@@ -25,20 +24,20 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                bat 'python -m pip install --upgrade pip'
-                bat 'python -m pip install -r requirements.txt'
+                bat 'C:\\Python310\\python.exe -m pip install --upgrade pip'
+                bat 'C:\\Python310\\python.exe -m pip install -r requirements.txt'
             }
         }
 
         stage('Run tests') {
             steps {
-                bat 'pytest tests/'
+                bat 'C:\\Python310\\python.exe -m pytest tests/'
             }
         }
 
         stage('Run comparison') {
             steps {
-                bat 'python compare/default_vs_ai.py'
+                bat 'C:\\Python310\\python.exe compare/default_vs_ai.py'
             }
         }
     }
@@ -46,8 +45,8 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'output/**/*.png', allowEmptyArchive: true
-            junit 'tests/**/*.xml'
         }
     }
 }
+
 
