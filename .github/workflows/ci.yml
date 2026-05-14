@@ -33,7 +33,7 @@ jobs:
         echo "📊 Graphs generated successfully" >> $GITHUB_STEP_SUMMARY
     
     - name: Upload graphs as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: scheduler-graphs
         path: output/comparison_report.png
