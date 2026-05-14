@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        python 'Python 3.10'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -14,20 +10,20 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'python -m pip install --upgrade pip'
-                sh 'python -m pip install -r requirements.txt'
+                bat 'python -m pip install --upgrade pip'
+                bat 'python -m pip install -r requirements.txt'
             }
         }
 
         stage('Run tests') {
             steps {
-                sh 'pytest tests/'
+                bat 'pytest tests/'
             }
         }
 
         stage('Run comparison') {
             steps {
-                sh 'python compare/default_vs_ai.py'
+                bat 'python compare/default_vs_ai.py'
             }
         }
     }
