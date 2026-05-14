@@ -8,6 +8,21 @@ pipeline {
             }
         }
 
+        stage('Install Python') {
+            steps {
+                bat '''
+                where python >nul 2>nul
+                if %errorlevel% neq 0 (
+                    echo Python not found, installing...
+                    choco install python --version=3.10.0 -y
+                    refreshenv
+                ) else (
+                    echo Python is already installed
+                )
+                '''
+            }
+        }
+
         stage('Install dependencies') {
             steps {
                 bat 'python -m pip install --upgrade pip'
@@ -35,3 +50,4 @@ pipeline {
         }
     }
 }
+
