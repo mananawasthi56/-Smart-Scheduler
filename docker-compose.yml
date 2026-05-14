@@ -1,14 +1,62 @@
-version: '3.8'
-
 services:
-  node1:
-    image: ubuntu:latest
-    container_name: scheduler-node-1
-    
-  node2:
-    image: ubuntu:latest
-    container_name: scheduler-node-2
-    
-  node3:
-    image: ubuntu:latest
-    container_name: scheduler-node-3
+  # SIMULATION CONTAINERS - Generate realistic workloads for testing
+  
+  nginx-prod:
+    image: nginx:latest
+    container_name: nginx-prod
+    ports:
+      - "8082:80"
+    mem_limit: 512m
+    cpus: "0.5"
+  
+  redis-cache:
+    image: redis:latest
+    container_name: redis-cache
+    mem_limit: 256m
+    cpus: "0.3"
+  
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: testdb
+    mem_limit: 1024m
+    cpus: "1.0"
+  
+  # Additional simulation containers - using alpine for compatibility
+  app-worker-1:
+    image: alpine:latest
+    container_name: app-worker-1
+    mem_limit: 256m
+    cpus: "0.2"
+    command: sleep 3600
+  
+  app-worker-2:
+    image: alpine:latest
+    container_name: app-worker-2
+    mem_limit: 256m
+    cpus: "0.2"
+    command: sleep 3600
+  
+  cache-warmer:
+    image: alpine:latest
+    container_name: cache-warmer
+    mem_limit: 512m
+    cpus: "0.4"
+    command: sleep 3600
+  
+  log-processor:
+    image: alpine:latest
+    container_name: log-processor
+    mem_limit: 128m
+    cpus: "0.1"
+    command: sleep 3600
+  
+  monitor-agent:
+    image: alpine:latest
+    container_name: monitor-agent
+    mem_limit: 64m
+    cpus: "0.05"
+    command: sleep 3600

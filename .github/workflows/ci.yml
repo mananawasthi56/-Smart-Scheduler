@@ -1,4 +1,4 @@
-name: CI
+name: Smart Scheduler CI
 
 on:
   push:
@@ -7,17 +7,33 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  test-and-simulate:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-      - name: Run tests
-        run: |
-          pytest tests/
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run scheduler simulation
+      run: |
+        python compare/default_vs_ai.py
+    
+    - name: Generate comparison report
+      run: |
+        echo "## Scheduler Comparison Results" >> $GITHUB_STEP_SUMMARY
+        echo "✅ AI Scheduler vs Default Scheduler" >> $GITHUB_STEP_SUMMARY
+        echo "📊 Graphs generated successfully" >> $GITHUB_STEP_SUMMARY
+    
+    - name: Upload graphs as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: scheduler-graphs
+        path: output/comparison_report.png

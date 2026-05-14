@@ -304,10 +304,8 @@ for bar, cost in zip(bars, costs):
 
 plt.suptitle('Smart Container Scheduling: Default vs AI Comparison', fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig('output/scheduler_comparison.png')
-plt.close(fig)
 plt.savefig('output/comparison_report.png', dpi=150, bbox_inches='tight')
-plt.show()
+plt.close(fig)
 
 print("\n   ✅ Graphs saved to 'output/comparison_report.png'")
 
